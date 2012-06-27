@@ -12,7 +12,7 @@
     /* Fire the beforeOpen event */
     this.options.beforeOpen();
     /* Construct the exposeMask */
-    var child = "<div id=\"tiSlideshowExposeMask\" style=\"position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; display: block; opacity: " + this.options.opacity + "; z-index: 9998; background-color: rgb(0, 0, 0); \"></div>";
+    var child = "<div id=\"tiSlideshowExposeMask\" style=\"position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; display: block; opacity: " + this.options.opacity + "; z-index: 9998; background-color: " + this.options.mask + "; \"></div>";
     $('body').append(child);
     /* Fire the onOpen event */
     this.options.onOpen();
