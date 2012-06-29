@@ -34,16 +34,8 @@
       self.close();
       return false;
     });
-    $('.tiSlideshowPlaceControlClose').hover(
-      function() {
-        $(this).children('.tiSlideshowPlaceControlCloseHover').show();
-      },
-      function() {
-        $(this).children('.tiSlideshowPlaceControlCloseHover').hide();
-      }
-    );
-    /* Render the elements */
-    $.tiSlideshow.adjustSize();
+    /* Apply options */
+    this.changeOptions();
     /* Fire the onOpen event */
     this.options.onOpen();
   };
@@ -60,6 +52,19 @@
     /* Fire the onClose event */
     this.options.onClose();
   };
+  tiSlideshow.prototype.changeOptions = function(options) {
+    this.options = $.extend({}, this.options, options);
+    /* mask */
+    $('#'+this.maskId).css('background-color', this.options.mask);
+    /* opacity */
+    $('#'+this.maskId).css('opacity', this.options.opacity);
+    /* closeButton */
+    if (!this.options.closeButton)
+      $('.tiSlideshowPlaceControlClose').width('0');
+    
+    /* Render the elements */
+    $.tiSlideshow.adjustSize();
+  }
 
   /* 
    * Usefull functions for the jQuery launch, with default settings
@@ -74,6 +79,7 @@
       auto : false,
       mask : "#000",
       opacity : 0.9,
+      closeButton : true,
       beforeOpen : function() {},
       onOpen : function() {},
       beforeClose : function() {},
@@ -87,18 +93,24 @@
           if ($(this).data('tiSlideshow')) {
             obj = $.tiSlideshow.interfaces[$(this).data('id')];
             /* Manage the commands that can be passed as parameters */
-            if (options == 'open') {
+            if (options == 'open')
               obj.open();
-            }
-            if (options == 'close') {
+            if (options == 'close')
               obj.close();
-            }
+            if (options == 'showCloseButton')
+              obj.showCloseButton();
+            if (options == 'hideCloseButton')
+              obj.hideCloseButton();
           }
         } else {
-          var id = $.tiSlideshow.interfaces.length;
-          $(this).data('tiSlideshow', true);
-          $(this).data('id', id);
-          new tiSlideshow($(this), extendedOptions, id);
+          if ($(this).data('tiSlideshow')) {
+            $.tiSlideshow.interfaces[$(this).data('id')].changeOptions(extendedOptions);
+          } else {
+            var id = $.tiSlideshow.interfaces.length;
+            $(this).data('tiSlideshow', true);
+            $(this).data('id', id);
+            new tiSlideshow($(this), extendedOptions, id);
+          }
         }
       });
     },

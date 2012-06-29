@@ -8,17 +8,17 @@ It can be closed both by the cross in the bottom right of the screen and the con
 
 
 ### DESCRIPTION ###
-A fully configurable jQuery plugin to use beautiful slideshow in your webpage. Compatible with tactile devices !
+A fully configurable jQuery plugin to use beautiful and fullscreen slideshow in your webpage. Compatible with tactile devices !
 
 ### FEATURES ###
 * _Get the full control_ :
-  - launchable by a call to jQuery function with a control parameter
-  - launchable automatically with the auto option
-  - closable by a call to jQuery function with a control parameter
-  - closable with the cross inside the tiSlideshow panel
+  - launchable by a call to jQuery function with a control parameter or automatically with the auto option
+  - closable by a call to jQuery function with a control parameter or with the cross inside the tiSlideshow panel
+  - realtime options modification : when you modify an option, by passing a new options array to an existing tiSlideshow, the display is modified instantly
 * _Configure many options_ :
   - the auto-launch of the slideshow
   - the mask color and opacity
+  - the presence of the cross in the bottom right of the panel to close it
 * _Listen to events_ :
   - beforeOpen
   - onOpen
