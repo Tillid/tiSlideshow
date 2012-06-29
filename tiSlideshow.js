@@ -2,20 +2,63 @@
   /*
    * Prototypes for the tiSlideshow object
    */
-  function tiSlideshow(container, options) {
+  function tiSlideshow(container, options, id) {
     this.container = container;
     this.options = options;
+    this.maskId = "";
+    this.isOpen = false;
+    $.tiSlideshow.interfaces[id] = this;
     if (this.options.auto)
       this.open();
   };
   tiSlideshow.prototype.open = function() {
+    /* To prevent multi open */
+    if (this.isOpen)
+      return ;
+    this.isOpen = true;
     /* Fire the beforeOpen event */
     this.options.beforeOpen();
-    /* Construct the exposeMask */
-    var child = "<div id=\"tiSlideshowExposeMask\" style=\"position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; display: block; opacity: " + this.options.opacity + "; z-index: 9998; background-color: " + this.options.mask + "; \"></div>";
-    $('body').append(child);
+    /* Construct the exposeMask and the content */
+    var maskId = "tiSlideshowExposeMask";
+    while ($('#'+maskId).length) {
+      maskId += "i";
+    }
+    this.maskId = maskId;
+    var exposeMask = "<div id=\"" + this.maskId + "\" class=\"tiSlideshowExposeMask\" style=\"opacity: " + this.options.opacity + "; background-color: " + this.options.mask + "; \"></div>";
+    var placeControl = '<div class="tiSlideshowPlaceControl"><a href="#" class="tiSlideshowPlaceControlClose"></a></div>';
+    var place = '<div class="tiSlideshowPlace"><div class="tiSlideshowPlaceSlider"><div class="tiSlideshowPlaceSliderPicture"></div></div>'+placeControl+'</div>';
+    $('body').append(exposeMask);
+    $('body').append(place);
+    var self = this;
+    $('.tiSlideshowPlaceControlClose').click(function() {
+      self.close();
+      return false;
+    });
+    $('.tiSlideshowPlaceControlClose').hover(
+      function() {
+        $(this).children('.tiSlideshowPlaceControlCloseHover').show();
+      },
+      function() {
+        $(this).children('.tiSlideshowPlaceControlCloseHover').hide();
+      }
+    );
+    /* Render the elements */
+    $.tiSlideshow.adjustSize();
     /* Fire the onOpen event */
     this.options.onOpen();
+  };
+  tiSlideshow.prototype.close = function() {
+    /* To prevent multi close */
+    if (!this.isOpen)
+      return ;
+    /* Fire the beforeClose event */
+    this.options.beforeClose();
+    /* Destruct the exposeMask and the content */
+    $('.tiSlideshowExposeMask').remove();
+    $('.tiSlideshowPlace').remove();
+    this.isOpen = false;
+    /* Fire the onClose event */
+    this.options.onClose();
   };
 
   /* 
@@ -40,14 +83,37 @@
       var extendedOptions = $.extend({}, $.tiSlideshow.options, options);
       var obj;
       return this.each(function() {
-        var id = $.tiSlideshow.interfaces.length;
-        $(this).data('tiSlideshow', true);
-        $(this).data('id', id);
-        obj = new tiSlideshow($(this), extendedOptions);
-        $.tiSlideshow.interfaces[id] = obj;
+        if (typeof options == 'string') {
+          if ($(this).data('tiSlideshow')) {
+            obj = $.tiSlideshow.interfaces[$(this).data('id')];
+            /* Manage the commands that can be passed as parameters */
+            if (options == 'open') {
+              obj.open();
+            }
+            if (options == 'close') {
+              obj.close();
+            }
+          }
+        } else {
+          var id = $.tiSlideshow.interfaces.length;
+          $(this).data('tiSlideshow', true);
+          $(this).data('id', id);
+          new tiSlideshow($(this), extendedOptions, id);
+        }
       });
     },
-    tiSlideshowOpen : function() {
+    adjustSize : function() {
+      var window_height = $(window).height();
+      /* Check if a tiSlideshow is open */
+      if (!$('.tiSlideshowExposeMask').length)
+        return ;
+      /* Resize inside tiSlideshowPlace, choose size of the main top and bottom parts */
+      $('.tiSlideshowPlaceSlider').height(window_height - 100);
+      
+      /* Resize inside tiSlideshowPlaceControl */
+      
+      
+      /* Resize inside tiSlideshowPlaceSlider */
     }
   };
 
@@ -55,4 +121,5 @@
    * List of all accessible functions for plugin users
    */
   $.fn.tiSlideshow = $.tiSlideshow.tiSlideshow;
+  $(window).resize($.tiSlideshow.adjustSize);
 })(jQuery);
