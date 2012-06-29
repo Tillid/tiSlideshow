@@ -7,6 +7,8 @@
     this.options = options;
     this.maskId = "";
     this.isOpen = false;
+    this.imageList = [];
+    this.currentImageIndex = 0;
     $.tiSlideshow.interfaces[id] = this;
     if (this.options.auto)
       this.open();
@@ -29,13 +31,32 @@
     var place = '<div class="tiSlideshowPlace"><div class="tiSlideshowPlaceSlider"><div class="tiSlideshowPlaceSliderPicture"></div></div>'+placeControl+'</div>';
     $('body').append(exposeMask);
     $('body').append(place);
+    if (navigator.appName == 'Microsoft Internet Explorer') {
+      $('.tiSlideshowPlaceControl').css('border', '1px solid white');
+    }
     var self = this;
     $('.tiSlideshowPlaceControlClose').click(function() {
       self.close();
       return false;
     });
+    /* Initialize slider content */
+    $(self.container).children('img').each(function() {
+      self.imageList.push($(this).attr('src'));
+    })
+    /* If there is a picture for the given index, we show it */
+    if (parseInt(self.currentImageIndex) < parseInt(self.imageList.length)) {
+      $('.tiSlideshowPlaceSliderPicture').html('<img src="'+self.imageList[self.currentImageIndex]+'" alt="test" />');
+      $('.tiSlideshowPlaceSliderPicture img').load(function() {
+        $('.tiSlideshowPlaceSliderPicture img').data('originalHeight', $('.tiSlideshowPlaceSliderPicture img').height());
+        $('.tiSlideshowPlaceSliderPicture img').data('originalWidth', $('.tiSlideshowPlaceSliderPicture img').width());
+        $.tiSlideshow.adjustSize();
+      });
+    }
     /* Apply options */
     this.changeOptions();
+    /* Flush the display */
+    $('.tiSlideshowExposeMask').show();
+    $('.tiSlideshowPlace').show();
     /* Fire the onOpen event */
     this.options.onOpen();
   };
@@ -126,6 +147,31 @@
       
       
       /* Resize inside tiSlideshowPlaceSlider */
+      var max_h = parseInt($('.tiSlideshowPlaceSlider').height());
+      var max_w = parseInt($('.tiSlideshowPlaceSlider').width());
+      if (!$('.tiSlideshowPlaceSliderPicture img').data('originalHeight') || !$('.tiSlideshowPlaceSliderPicture img').data('originalWidth')) {
+        $('.tiSlideshowPlaceSliderPicture img').data('originalHeight', $('.tiSlideshowPlaceSliderPicture img').height());
+        $('.tiSlideshowPlaceSliderPicture img').data('originalWidth', $('.tiSlideshowPlaceSliderPicture img').width());
+        return ;
+      }
+      var h = parseInt($('.tiSlideshowPlaceSliderPicture img').data('originalHeight'));
+      var w = parseInt($('.tiSlideshowPlaceSliderPicture img').data('originalWidth'));
+      /* Check if you have to resize image */
+      $('.tiSlideshowPlaceSliderPicture img').css('margin-top', '0px');
+      if (h > max_h || w > max_w) {
+        if (h > max_h) {
+          w = w * max_h / h;
+          h = max_h;
+        }
+        if (w > max_w) {
+          h = h * max_w / w;
+          w = max_w;
+        }
+      }
+      $('.tiSlideshowPlaceSliderPicture img').height(h);
+      $('.tiSlideshowPlaceSliderPicture img').width(w);
+      var diff = (max_h - h) / 2;
+      $('.tiSlideshowPlaceSliderPicture img').css('margin-top', diff+'px');
     }
   };
 

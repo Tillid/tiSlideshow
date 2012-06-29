@@ -6,6 +6,7 @@ div.tiSlideshowExposeMask {
   min-height: 100%;
   display: block;
   z-index: 9998;
+  display: none;
 }
 
 div.tiSlideshowPlace {
@@ -15,6 +16,7 @@ div.tiSlideshowPlace {
   width: 100%;
   height: 100%;
   z-index: 9999;
+  display: none;
 }
 
 div.tiSlideshowPlaceSlider {
@@ -27,6 +29,10 @@ div.tiSlideshowPlaceSlider {
 div.tiSlideshowPlaceSliderPicture {
   height: 100%;
   width: 100%;
+}
+
+div.tiSlideshowPlaceSliderPicture img {
+  margin: auto;
 }
 
 div.tiSlideshowPlaceControl {

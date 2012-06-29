@@ -4,7 +4,8 @@ tiSlideshow
 **WARNING :** this plugin is under hard development. Maybe one day it will work, but not now, sorry =)
 
 _Right now, the plugin is able to be launched via the control parameter or automatically, and draw the expose mask.
-It can be closed both by the cross in the bottom right of the screen and the control parameter. And that's all o/_
+It can be closed both by the cross in the bottom right of the screen and the control parameter.
+It displays the first picture of all the img element placed inside the tiSlideshow root element. And that's all o/_
 
 
 ### DESCRIPTION ###
@@ -24,4 +25,7 @@ A fully configurable jQuery plugin to use beautiful and fullscreen slideshow in 
   - onOpen
   - beforeClose
   - onClose
+* _Appreciate all the bonuses_ :
+  - the display changes each time the window size changes
+  - the picture is scaled depending on the size of the page
 * **And many many more is coming !**
