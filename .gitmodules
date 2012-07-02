@@ -1,0 +1,3 @@
+[submodule "jScrollPane"]
+	path = jScrollPane
+	url = git://github.com/vitch/jScrollPane.git
