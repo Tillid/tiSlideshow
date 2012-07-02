@@ -28,7 +28,7 @@
     this.maskId = maskId;
     var exposeMask = "<div id=\"" + this.maskId + "\" class=\"tiSlideshowExposeMask\" style=\"opacity: " + this.options.opacity + "; background-color: " + this.options.mask + "; \"></div>";
     var placeControl = '<div class="tiSlideshowPlaceControl"><a href="#" class="tiSlideshowPlaceControlClose"></a></div>';
-    var place = '<div class="tiSlideshowPlace"><div class="tiSlideshowPlaceSlider"><div class="tiSlideshowPlaceSliderPicture"></div></div>'+placeControl+'</div>';
+    var place = '<div class="tiSlideshowPlace"><div class="tiSlideshowPlaceSlider"><a href="#" class="tiSlideshowPlaceSliderPrevious"></a><a href="#" class="tiSlideshowPlaceSliderNext"></a><div class="tiSlideshowPlaceSliderPicture"></div></div>'+placeControl+'</div>';
     $('body').append(exposeMask);
     $('body').append(place);
     if (navigator.appName == 'Microsoft Internet Explorer') {
@@ -37,6 +37,14 @@
     var self = this;
     $('.tiSlideshowPlaceControlClose').click(function() {
       self.close();
+      return false;
+    });
+    $('.tiSlideshowPlaceSliderPrevious').click(function() {
+      self.previous();
+      return false;
+    });
+    $('.tiSlideshowPlaceSliderNext').click(function() {
+      self.next();
       return false;
     });
     /* Initialize slider content */
@@ -87,10 +95,30 @@
     $.tiSlideshow.adjustSize();
   };
   tiSlideshow.prototype.next = function() {
-    
+    var self = this;
+    var newImageIndex = parseInt(self.currentImageIndex) + 1;
+    if (newImageIndex < parseInt(self.imageList.length) && newImageIndex >= 0) {
+      self.currentImageIndex = newImageIndex;
+      $('.tiSlideshowPlaceSliderPicture').html('<img src="'+self.imageList[self.currentImageIndex]+'" alt="test" />');
+      $('.tiSlideshowPlaceSliderPicture img').load(function() {
+        $('.tiSlideshowPlaceSliderPicture img').data('originalHeight', $('.tiSlideshowPlaceSliderPicture img').height());
+        $('.tiSlideshowPlaceSliderPicture img').data('originalWidth', $('.tiSlideshowPlaceSliderPicture img').width());
+        $.tiSlideshow.adjustSize();
+      });
+    }
   };
   tiSlideshow.prototype.previous = function() {
-    
+    var self = this;
+    var newImageIndex = parseInt(self.currentImageIndex) - 1;
+    if (newImageIndex < parseInt(self.imageList.length) && newImageIndex >= 0) {
+      self.currentImageIndex = newImageIndex;
+      $('.tiSlideshowPlaceSliderPicture').html('<img src="'+self.imageList[self.currentImageIndex]+'" alt="test" />');
+      $('.tiSlideshowPlaceSliderPicture img').load(function() {
+        $('.tiSlideshowPlaceSliderPicture img').data('originalHeight', $('.tiSlideshowPlaceSliderPicture img').height());
+        $('.tiSlideshowPlaceSliderPicture img').data('originalWidth', $('.tiSlideshowPlaceSliderPicture img').width());
+        $.tiSlideshow.adjustSize();
+      });
+    }    
   };
 
   /* 
@@ -151,6 +179,12 @@
         $('.tiSlideshowPlaceSlider').height(window_height - 100);
       else
         $('.tiSlideshowPlaceSlider').height(0);
+      /* Properly place arrows to change slide */
+      var diff_previous = (parseInt($('.tiSlideshowPlaceSlider').height()) - $('.tiSlideshowPlaceSliderPrevious').height()) / 2;
+      var diff_next = (parseInt($('.tiSlideshowPlaceSlider').height()) - $('.tiSlideshowPlaceSliderNext').height()) / 2;
+      console.log(diff_previous + "|" + diff_next);
+      $('.tiSlideshowPlaceSliderPrevious').css('top', diff_previous + 'px');
+      $('.tiSlideshowPlaceSliderNext').css('top', diff_next + 'px');
       
       /* Resize inside tiSlideshowPlaceControl */
       

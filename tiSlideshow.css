@@ -26,6 +26,30 @@ div.tiSlideshowPlaceSlider {
   box-shadow: 0 0 55px 0 #000 inset;
 }
 
+.tiSlideshowPlaceSliderPrevious {
+  position: absolute;
+  left: 0;
+  height: 80px;
+  width: 60px;
+  background-image: url("/tiSlideshow/images/previous_sprite.png");
+}
+
+.tiSlideshowPlaceSliderPrevious:hover {
+  background-position-y: -80px;
+}
+
+.tiSlideshowPlaceSliderNext {
+  position: absolute;
+  right: 0;
+  height: 80px;
+  width: 60px;
+  background-image: url("/tiSlideshow/images/next_sprite.png");
+}
+
+.tiSlideshowPlaceSliderNext:hover {
+  background-position-y: -80px;
+}
+
 div.tiSlideshowPlaceSliderPicture {
   height: 100%;
   width: 100%;
