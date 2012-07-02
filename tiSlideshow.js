@@ -82,8 +82,8 @@
     $('.tiSlideshowPlaceSliderPicture img').load(function() {
       $('.tiSlideshowPlaceSliderPicture img').data('originalHeight', $('.tiSlideshowPlaceSliderPicture img').height());
       $('.tiSlideshowPlaceSliderPicture img').data('originalWidth', $('.tiSlideshowPlaceSliderPicture img').width());
-      $('.tiSlideshowPlaceSliderPicture img').show();
       $.tiSlideshow.adjustSize();
+      $('.tiSlideshowPlaceSliderPicture img').show();
       if (callback)
         callback();
     });
