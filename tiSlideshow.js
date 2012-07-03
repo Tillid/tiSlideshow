@@ -27,7 +27,7 @@
     }
     this.maskId = maskId;
     var exposeMask = "<div id=\"" + this.maskId + "\" class=\"tiSlideshowExposeMask\" style=\"opacity: " + this.options.opacity + "; background-color: " + this.options.mask + "; \"></div>";
-    var placeControl = '<div class="tiSlideshowPlaceControl"><a href="#" class="tiSlideshowPlaceControlClose"></a></div>';
+    var placeControl = '<div class="tiSlideshowPlaceControl"><div class="tiSlideshowPlaceControlThumbnails"></div><a href="#" class="tiSlideshowPlaceControlClose"></a></div>';
     var place = '<div class="tiSlideshowPlace"><div class="tiSlideshowPlaceSlider"><a href="#" class="tiSlideshowPlaceSliderPrevious"></a><a href="#" class="tiSlideshowPlaceSliderNext"></a><div class="tiSlideshowPlaceSliderPicture"></div></div>'+placeControl+'</div>';
     $('body').append(exposeMask);
     $('body').append(place);
@@ -47,10 +47,32 @@
       self.next();
       return false;
     });
-    /* Initialize slider content */
+    /* Initialize slider content, and thumbnails */
     $(self.container).children('img').each(function() {
-      self.imageList.push($(this).attr('src'));
+      var src = $(this).attr('src');
+      self.imageList.push(src);
+      var thumbnail = '<a href="#" class="tiSlideshowPlaceControlThumbnailsThumbnail"><img src="'+src+'" alt="thumbnail" /></a>';
+      $('.tiSlideshowPlaceControlThumbnails').append(thumbnail);
     })
+    $('.tiSlideshowPlaceControlThumbnails .tiSlideshowPlaceControlThumbnailsThumbnail img').load(function() {
+      $(this).data('originalHeight', $(this).height());
+      $(this).data('originalWidth', $(this).width());
+      $.tiSlideshow.adjustSize();
+    });
+    $('.tiSlideshowPlaceControlThumbnails .tiSlideshowPlaceControlThumbnailsThumbnail:eq('+self.currentImageIndex+')').addClass('tiSlideshowPlaceControlThumbnailsSelected');
+    $('.tiSlideshowPlaceControlThumbnailsThumbnail').click(function() {
+      var diff = $(this).index() - self.currentImageIndex;
+      while (diff) {
+        if (diff > 0) {
+          self.next();
+          diff--;
+        } else {
+          self.previous();
+          diff++;
+        }
+      }
+      return false;
+    });
     /* If there is a picture for the given index, we show it */
     if (parseInt(self.currentImageIndex) < parseInt(self.imageList.length)) {
       this.showCurrentImage();
@@ -84,6 +106,8 @@
       $('.tiSlideshowPlaceSliderPicture img').data('originalWidth', $('.tiSlideshowPlaceSliderPicture img').width());
       $.tiSlideshow.adjustSize();
       $('.tiSlideshowPlaceSliderPicture img').show();
+      $('.tiSlideshowPlaceControlThumbnailsSelected').removeClass('tiSlideshowPlaceControlThumbnailsSelected');
+      $('.tiSlideshowPlaceControlThumbnails .tiSlideshowPlaceControlThumbnailsThumbnail:eq('+self.currentImageIndex+')').addClass('tiSlideshowPlaceControlThumbnailsSelected');
       if (callback)
         callback();
     });
@@ -285,6 +309,7 @@
     },
     adjustSize : function() {
       var window_height = $(window).height();
+      var window_width = $(window).width();
       /* Check if a tiSlideshow is open */
       if (!$('.tiSlideshowExposeMask').length)
         return ;
@@ -300,7 +325,35 @@
       $('.tiSlideshowPlaceSliderNext').css('top', diff_next + 'px');
       
       /* Resize inside tiSlideshowPlaceControl */
-      
+      if (window_width - 100 > 0)
+        $('.tiSlideshowPlaceControlThumbnails').width(window_width - 100);
+      else
+        $('.tiSlideshowPlaceControlThumbnails').width(0);
+      /* Resize each thumbnail */
+      $('.tiSlideshowPlaceControlThumbnailsThumbnail').each(function() {
+        var max_t_h = $(this).height();
+        var max_t_w = $(this).width();
+        if ($(this).find('img').data('originalHeight') && $(this).find('img').data('originalWidth')) {
+          var h = $(this).find('img').data('originalHeight');
+          var w = $(this).find('img').data('originalWidth');
+          if (h > max_t_h || w > max_t_w) {
+            if (h > max_t_h) {
+              w = w * max_t_h / h;
+              h = max_t_h;
+            }
+            if (w > max_t_w) {
+              h = h * max_t_w / w;
+              w = max_t_w;
+            }
+            $(this).find('img').height(h);
+            $(this).find('img').width(w);
+            var diff = parseInt((max_t_h - h) / 2);
+            if (diff < 0)
+              diff = 0;
+            $(this).find('img').css('margin-top', diff+'px');
+          }
+        }
+      });
       
       /* Resize inside tiSlideshowPlaceSlider */
       var max_h = parseInt($('.tiSlideshowPlaceSlider').height());

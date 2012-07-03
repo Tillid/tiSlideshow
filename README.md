@@ -6,7 +6,9 @@ tiSlideshow
 _Right now, the plugin is able to be launched via the control parameter or automatically, and draw the expose mask.
 It can be closed both by the cross in the bottom right of the screen and the control parameter.
 It displays the first picture of all the img element placed inside the tiSlideshow root element.
-You can slide pictures by using the previous and next button located on each side of the screen ! And that's all o/_
+You can slide pictures by using the previous and next button located on each side of the screen !
+There is a list of thumbnails displayed in the bottom of the screen, and you can switch between picture with this tool !
+And that's all ! Hmm, i'm not sure i can say that anymore, cause it starts getting pretty ! o/_
 
 
 ### DESCRIPTION ###
@@ -36,4 +38,5 @@ A fully configurable jQuery plugin to use beautiful and fullscreen slideshow in 
 * _Appreciate all the bonuses_ :
   - the display changes each time the window size changes
   - the picture is scaled depending on the size of the page
+  - user can use the thumbnails list to find picture faster
 * **And many many more is coming !**
