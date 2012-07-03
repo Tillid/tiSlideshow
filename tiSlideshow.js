@@ -340,12 +340,10 @@
       var window_height = $(window).height();
       var window_width = $(window).width();
       /* Resize inside tiSlideshowPlace, choose size of the main top and bottom parts */
-      if (!(openedTiSlideshow.options.mobile && openedTiSlideshow.isInitialized)) {
-        if (window_height - 100 > 0)
-          $('.tiSlideshowPlaceSlider').height(window_height - 100);
-        else
-          $('.tiSlideshowPlaceSlider').height(0);
-      }
+      if (window_height - 100 > 0)
+        $('.tiSlideshowPlaceSlider').height(window_height - 100);
+      else
+        $('.tiSlideshowPlaceSlider').height(0);
       /* Properly place arrows to change slide */
       var diff_previous = parseInt(($('.tiSlideshowPlaceSlider').height() - $('.tiSlideshowPlaceSliderPrevious').height()) / 2);
       var diff_next = parseInt(($('.tiSlideshowPlaceSlider').height() - $('.tiSlideshowPlaceSliderNext').height()) / 2);
