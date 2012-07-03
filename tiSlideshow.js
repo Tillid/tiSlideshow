@@ -55,8 +55,8 @@
       $('.tiSlideshowPlaceControlThumbnails').append(thumbnail);
     })
     $('.tiSlideshowPlaceControlThumbnails .tiSlideshowPlaceControlThumbnailsThumbnail img').load(function() {
-      $(this).data('originalHeight', $(this).height());
-      $(this).data('originalWidth', $(this).width());
+      $(this).data('originalHeight', this.height);
+      $(this).data('originalWidth', this.width);
       $.tiSlideshow.adjustSize();
     });
     $('.tiSlideshowPlaceControlThumbnails .tiSlideshowPlaceControlThumbnailsThumbnail:eq('+self.currentImageIndex+')').addClass('tiSlideshowPlaceControlThumbnailsSelected');
@@ -107,8 +107,8 @@
     var self = this;
     $('.tiSlideshowPlaceSliderPicture').html('<img src="'+self.imageList[self.currentImageIndex]+'" alt="test" style="display: none;"/>');
     $('.tiSlideshowPlaceSliderPicture img').load(function() {
-      $('.tiSlideshowPlaceSliderPicture img').data('originalHeight', $('.tiSlideshowPlaceSliderPicture img').height());
-      $('.tiSlideshowPlaceSliderPicture img').data('originalWidth', $('.tiSlideshowPlaceSliderPicture img').width());
+      $('.tiSlideshowPlaceSliderPicture img').data('originalHeight', this.height);
+      $('.tiSlideshowPlaceSliderPicture img').data('originalWidth', this.width);
       $.tiSlideshow.adjustSize();
       $('.tiSlideshowPlaceSliderPicture img').show();
       $('.tiSlideshowPlaceControlThumbnailsSelected').removeClass('tiSlideshowPlaceControlThumbnailsSelected');
@@ -149,6 +149,12 @@
         else
           $('.tiSlideshowPlaceSliderNext').show();
       }
+    }
+    /* thumbnails */
+    if (this.options.thumbnails) {
+      $('.tiSlideshowPlaceControlThumbnailsScroll').show();
+    } else {
+      $('.tiSlideshowPlaceControlThumbnailsScroll').hide();
     }
     
     /* Render the elements */
@@ -276,6 +282,7 @@
       closeButton : true,
       slideButtons : true,
       infiniteSlide : false,
+      thumbnails : true,
       beforeOpen : function() {},
       onOpen : function() {},
       beforeClose : function() {},
@@ -302,7 +309,7 @@
           }
         } else {
           if ($(this).data('tiSlideshow')) {
-            $.tiSlideshow.interfaces[$(this).data('id')].changeOptions(extendedOptions);
+            $.tiSlideshow.interfaces[$(this).data('id')].changeOptions(options);
           } else {
             var id = $.tiSlideshow.interfaces.length;
             $(this).data('tiSlideshow', true);
