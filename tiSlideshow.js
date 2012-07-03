@@ -27,7 +27,7 @@
     }
     this.maskId = maskId;
     var exposeMask = "<div id=\"" + this.maskId + "\" class=\"tiSlideshowExposeMask\" style=\"opacity: " + this.options.opacity + "; background-color: " + this.options.mask + "; \"></div>";
-    var placeControl = '<div class="tiSlideshowPlaceControl"><div class="tiSlideshowPlaceControlThumbnails"></div><a href="#" class="tiSlideshowPlaceControlClose"></a></div>';
+    var placeControl = '<div class="tiSlideshowPlaceControl"><div class="tiSlideshowPlaceControlThumbnailsScroll"><div class="tiSlideshowPlaceControlThumbnails"></div></div><a href="#" class="tiSlideshowPlaceControlClose"></a></div>';
     var place = '<div class="tiSlideshowPlace"><div class="tiSlideshowPlaceSlider"><a href="#" class="tiSlideshowPlaceSliderPrevious"></a><a href="#" class="tiSlideshowPlaceSliderNext"></a><div class="tiSlideshowPlaceSliderPicture"></div></div>'+placeControl+'</div>';
     $('body').append(exposeMask);
     $('body').append(place);
@@ -73,6 +73,12 @@
       }
       return false;
     });
+    var container_width = 0;
+    $('.tiSlideshowPlaceControlThumbnailsThumbnail').each(function() {
+      container_width += $(this).outerWidth(true);
+    });
+    $('.tiSlideshowPlaceControlThumbnails').width(container_width);
+    $('.tiSlideshowPlaceControlThumbnailsScroll').jScrollPane();
     /* If there is a picture for the given index, we show it */
     if (parseInt(self.currentImageIndex) < parseInt(self.imageList.length)) {
       this.showCurrentImage();
@@ -326,9 +332,9 @@
       
       /* Resize inside tiSlideshowPlaceControl */
       if (window_width - 100 > 0)
-        $('.tiSlideshowPlaceControlThumbnails').width(window_width - 100);
+        $('.tiSlideshowPlaceControlThumbnailsScroll').width(window_width - 100);
       else
-        $('.tiSlideshowPlaceControlThumbnails').width(0);
+        $('.tiSlideshowPlaceControlThumbnailsScroll').width(0);
       /* Resize each thumbnail */
       $('.tiSlideshowPlaceControlThumbnailsThumbnail').each(function() {
         var max_t_h = $(this).height();

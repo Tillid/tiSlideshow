@@ -67,12 +67,18 @@ div.tiSlideshowPlaceControl {
   box-shadow: 0 0 15px 0 #CCC inset;
 }
 
-div.tiSlideshowPlaceControlThumbnails {
+div.tiSlideshowPlaceControlThumbnailsScroll {
   position: absolute;
   bottom: 0;
   left: 0;
   height: 100px;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+div.tiSlideshowPlaceControlThumbnails {
+  display: inline-block;
+  height: 100px;
 }
 
 a.tiSlideshowPlaceControlThumbnailsThumbnail {
