@@ -9,6 +9,7 @@
     this.isOpen = false;
     this.imageList = [];
     this.currentImageIndex = 0;
+    this.isInitialized = false;
     $.tiSlideshow.interfaces[id] = this;
     if (this.options.auto)
       this.open();
@@ -88,6 +89,7 @@
     $('.tiSlideshowExposeMask').show();
     $('.tiSlideshowPlace').show();
     /* Fire the onOpen event */
+    this.isInitialized = true;
     this.onOpen();
   };
   tiSlideshow.prototype.close = function() {
@@ -283,6 +285,7 @@
       slideButtons : true,
       infiniteSlide : false,
       thumbnails : true,
+      mobile : true,
       beforeOpen : function() {},
       onOpen : function() {},
       beforeClose : function() {},
@@ -319,17 +322,30 @@
         }
       });
     },
+    retrieveOpenedTiSlideshow : function() {
+      if (!$('.tiSlideshowExposeMask').length)
+        return null;
+      var exposeMaskId = $('.tiSlideshowExposeMask').attr('id');
+      for(var id in $.tiSlideshow.interfaces){
+        if ($.tiSlideshow.interfaces[id].maskId == exposeMaskId)
+          return $.tiSlideshow.interfaces[id];
+      }
+      return null;
+    },
     adjustSize : function() {
+      /* Check if a tiSlideshow is open */
+      var openedTiSlideshow = $.tiSlideshow.retrieveOpenedTiSlideshow();
+      if (!openedTiSlideshow)
+        return ;
       var window_height = $(window).height();
       var window_width = $(window).width();
-      /* Check if a tiSlideshow is open */
-      if (!$('.tiSlideshowExposeMask').length)
-        return ;
       /* Resize inside tiSlideshowPlace, choose size of the main top and bottom parts */
-      if (window_height - 100 > 0)
-        $('.tiSlideshowPlaceSlider').height(window_height - 100);
-      else
-        $('.tiSlideshowPlaceSlider').height(0);
+      if (!(openedTiSlideshow.options.mobile && openedTiSlideshow.isInitialized)) {
+        if (window_height - 100 > 0)
+          $('.tiSlideshowPlaceSlider').height(window_height - 100);
+        else
+          $('.tiSlideshowPlaceSlider').height(0);
+      }
       /* Properly place arrows to change slide */
       var diff_previous = parseInt(($('.tiSlideshowPlaceSlider').height() - $('.tiSlideshowPlaceSliderPrevious').height()) / 2);
       var diff_next = parseInt(($('.tiSlideshowPlaceSlider').height() - $('.tiSlideshowPlaceSliderNext').height()) / 2);
