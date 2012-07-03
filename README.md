@@ -42,4 +42,5 @@ A fully configurable jQuery plugin to use beautiful and fullscreen slideshow in 
   - the picture is scaled depending on the size of the page
   - user can use the thumbnails list to find picture faster
   - if jScrollPane is included in your page, it will automatically use the jScrollPane plugin for the thumbnails list
+  - if you activate mobile option, it will prevent the user from scrolling without closing the tiSlideshow
 * **And many many more is coming !**
