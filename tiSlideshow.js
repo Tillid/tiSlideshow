@@ -9,7 +9,6 @@
     this.isOpen = false;
     this.imageList = [];
     this.currentImageIndex = 0;
-    this.isInitialized = false;
     $.tiSlideshow.interfaces[id] = this;
     if (this.options.auto)
       this.open();
@@ -18,10 +17,12 @@
     /* To prevent multi open */
     if (this.isOpen)
       return ;
-    this.isOpen = true;
     /* Fire the beforeOpen event */
     if (!this.beforeOpen()) return;
+    this.isOpen = true;
     /* Construct the exposeMask and the content */
+    this.imageList = [];
+    this.currentImageIndex = 0;
     var maskId = "tiSlideshowExposeMask";
     while ($('#'+maskId).length) {
       maskId += "i";
@@ -89,7 +90,6 @@
     $('.tiSlideshowExposeMask').show();
     $('.tiSlideshowPlace').show();
     /* Fire the onOpen event */
-    this.isInitialized = true;
     this.onOpen();
   };
   tiSlideshow.prototype.close = function() {
@@ -115,6 +115,7 @@
       $('.tiSlideshowPlaceSliderPicture img').data('originalWidth', this.width);
       $.tiSlideshow.adjustSize();
       $('.tiSlideshowPlaceSliderPicture img').show();
+      console.log(self.currentImageIndex);
       $('.tiSlideshowPlaceControlThumbnailsSelected').removeClass('tiSlideshowPlaceControlThumbnailsSelected');
       $('.tiSlideshowPlaceControlThumbnails .tiSlideshowPlaceControlThumbnailsThumbnail:eq('+self.currentImageIndex+')').addClass('tiSlideshowPlaceControlThumbnailsSelected');
       if (callback)
