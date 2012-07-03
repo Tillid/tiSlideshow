@@ -39,4 +39,5 @@ A fully configurable jQuery plugin to use beautiful and fullscreen slideshow in 
   - the display changes each time the window size changes
   - the picture is scaled depending on the size of the page
   - user can use the thumbnails list to find picture faster
+  - if jScrollPane is included in your page, it will automatically use the jScrollPane plugin for the thumbnails list
 * **And many many more is coming !**

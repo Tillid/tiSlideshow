@@ -78,7 +78,6 @@
       container_width += $(this).outerWidth(true);
     });
     $('.tiSlideshowPlaceControlThumbnails').width(container_width);
-    $('.tiSlideshowPlaceControlThumbnailsScroll').jScrollPane();
     /* If there is a picture for the given index, we show it */
     if (parseInt(self.currentImageIndex) < parseInt(self.imageList.length)) {
       this.showCurrentImage();
@@ -331,8 +330,11 @@
       $('.tiSlideshowPlaceSliderNext').css('top', diff_next + 'px');
       
       /* Resize inside tiSlideshowPlaceControl */
-      if (window_width - 100 > 0)
+      if ($('.tiSlideshowPlaceControlThumbnailsScroll').data('jsp'))
+        $('.tiSlideshowPlaceControlThumbnailsScroll').data('jsp').destroy();
+      if (window_width - 100 > 0) {
         $('.tiSlideshowPlaceControlThumbnailsScroll').width(window_width - 100);
+      }
       else
         $('.tiSlideshowPlaceControlThumbnailsScroll').width(0);
       /* Resize each thumbnail */
@@ -360,7 +362,13 @@
           }
         }
       });
-      
+      /* Activate the ScrollPane */
+      if (!$('.tiSlideshowPlaceControlThumbnailsScroll').data('jsp')) {
+        if ($.fn.jScrollPane)
+          $('.tiSlideshowPlaceControlThumbnailsScroll').jScrollPane();
+      } else {
+        $('.tiSlideshowPlaceControlThumbnailsScroll').data('jsp').reinitialise();
+      }
       /* Resize inside tiSlideshowPlaceSlider */
       var max_h = parseInt($('.tiSlideshowPlaceSlider').height());
       var max_w = parseInt($('.tiSlideshowPlaceSlider').width());

@@ -115,3 +115,8 @@ a.tiSlideshowPlaceControlClose:hover {
 div.tiSlideshowPlaceControlClose img {
   height: 100%;
 }
+
+/* About the jScrollPane plugin */
+div.jspDrag {
+  background-color: #3B3B3D;
+}
