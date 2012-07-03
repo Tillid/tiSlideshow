@@ -115,7 +115,6 @@
       $('.tiSlideshowPlaceSliderPicture img').data('originalWidth', this.width);
       $.tiSlideshow.adjustSize();
       $('.tiSlideshowPlaceSliderPicture img').show();
-      console.log(self.currentImageIndex);
       $('.tiSlideshowPlaceControlThumbnailsSelected').removeClass('tiSlideshowPlaceControlThumbnailsSelected');
       $('.tiSlideshowPlaceControlThumbnails .tiSlideshowPlaceControlThumbnailsThumbnail:eq('+self.currentImageIndex+')').addClass('tiSlideshowPlaceControlThumbnailsSelected');
       if (callback)
