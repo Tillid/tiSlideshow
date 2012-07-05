@@ -140,7 +140,9 @@
       $('.tiSlideshowPlaceSliderPrevious, .tiSlideshowPlaceSliderNext').hide();
     /* infiniteSlide */
     if (this.options.slideButtons) {
-      if (this.options.infiniteSlide) {
+      if (this.imageList.length == 0) {
+        $('.tiSlideshowPlaceSliderPrevious, .tiSlideshowPlaceSliderNext').hide();
+      } else if (this.options.infiniteSlide) {
         if (this.currentImageIndex == 0) $('.tiSlideshowPlaceSliderPrevious').show();
         if (this.currentImageIndex == this.imageList.length - 1) $('.tiSlideshowPlaceSliderNext').show();
       } else {
