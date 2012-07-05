@@ -241,8 +241,18 @@
     $('.tiSlideshowPlaceControlThumbnails').width(container_width);
     /* Tactile management */
     $('.tiSlideshowPlaceControlThumbnails').unbind("touchmove");
-    $('.tiSlideshowPlaceControlThumbnails').bind("touchmove", function() {
-      
+    $('.tiSlideshowPlaceControlThumbnailsScroll').bind("touchmove", function(e) {
+      var new_x = e.originalEvent.touches[0].pageX;
+      if (self.lastTouchX > 0) {
+        var diff = self.lastTouchX - new_x;
+        var lastScrollLeft = $('.tiSlideshowPlaceControlThumbnailsScroll').scrollLeft();
+        $('.tiSlideshowPlaceControlThumbnailsScroll').scrollLeft(lastScrollLeft + diff);
+      }
+      self.lastTouchX = new_x;
+    });
+    $('.tiSlideshowPlaceControlThumbnailsScroll').unbind("touchstart");
+    $('.tiSlideshowPlaceControlThumbnailsScroll').bind("touchstart", function(e) {
+      self.lastTouchX = 0;
     });
   };
   /* List of all the callback, used to set the jQuery context for each one */
