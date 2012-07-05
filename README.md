@@ -27,7 +27,7 @@ A fully configurable jQuery plugin to use beautiful and fullscreen slideshow in 
   - the presence of the previous and next buttons
   - the ability to have an infinite slide (by clicking the next buttons on the last picture, the first picture will be showed)
   - the presence of the thumbnails list
-  - mobile enhancement : the experience on a mobile device is really different, so if you activate this option, it should be better (to zoom for example)
+  - tactile enhancement : the experience on a tactile device is really different, so if you activate this option, it should be better (to zoom for example)
 * _Listen to events_ :
   - each callback has the jQuery context set properly : you can retrieve the root element by using $(this)
   - if you return false on any before callback event, it will prevent from doing anything else, so cool !
@@ -42,5 +42,5 @@ A fully configurable jQuery plugin to use beautiful and fullscreen slideshow in 
   - the picture is scaled depending on the size of the page
   - user can use the thumbnails list to find picture faster
   - if jScrollPane is included in your page, it will automatically use the jScrollPane plugin for the thumbnails list
-  - if you activate mobile option, it will prevent the user from scrolling without closing the tiSlideshow
+  - if you activate tactile option, it will prevent the user from scrolling without closing the tiSlideshow
 * **And many many more is coming !**

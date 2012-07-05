@@ -37,18 +37,6 @@
       $('.tiSlideshowPlaceControl').css('border', '1px solid white');
     }
     var self = this;
-    $('.tiSlideshowPlaceControlClose').click(function() {
-      self.close();
-      return false;
-    });
-    $('.tiSlideshowPlaceSliderPrevious').click(function() {
-      self.previous();
-      return false;
-    });
-    $('.tiSlideshowPlaceSliderNext').click(function() {
-      self.next();
-      return false;
-    });
     /* Initialize slider content, and thumbnails */
     $(self.container).children('img').each(function() {
       var src = $(this).attr('src');
@@ -56,30 +44,7 @@
       var thumbnail = '<a href="#" class="tiSlideshowPlaceControlThumbnailsThumbnail"><img src="'+src+'" alt="thumbnail" /></a>';
       $('.tiSlideshowPlaceControlThumbnails').append(thumbnail);
     })
-    $('.tiSlideshowPlaceControlThumbnails .tiSlideshowPlaceControlThumbnailsThumbnail img').load(function() {
-      $(this).data('originalHeight', this.height);
-      $(this).data('originalWidth', this.width);
-      $.tiSlideshow.adjustSize();
-    });
-    $('.tiSlideshowPlaceControlThumbnails .tiSlideshowPlaceControlThumbnailsThumbnail:eq('+self.currentImageIndex+')').addClass('tiSlideshowPlaceControlThumbnailsSelected');
-    $('.tiSlideshowPlaceControlThumbnailsThumbnail').click(function() {
-      var diff = $(this).index() - self.currentImageIndex;
-      while (diff) {
-        if (diff > 0) {
-          self.next();
-          diff--;
-        } else {
-          self.previous();
-          diff++;
-        }
-      }
-      return false;
-    });
-    var container_width = 0;
-    $('.tiSlideshowPlaceControlThumbnailsThumbnail').each(function() {
-      container_width += $(this).outerWidth(true);
-    });
-    $('.tiSlideshowPlaceControlThumbnails').width(container_width);
+    self.initThumbnailsEvent();
     /* If there is a picture for the given index, we show it */
     if (parseInt(self.currentImageIndex) < parseInt(self.imageList.length)) {
       this.showCurrentImage();
@@ -109,7 +74,7 @@
   };
   tiSlideshow.prototype.showCurrentImage = function(callback) {
     var self = this;
-    $('.tiSlideshowPlaceSliderPicture').html('<img src="'+self.imageList[self.currentImageIndex]+'" alt="test" style="display: none;"/>');
+    $('.tiSlideshowPlaceSliderPicture').html('<img src="'+self.imageList[self.currentImageIndex]+'" alt="picture" style="display: none;"/>');
     $('.tiSlideshowPlaceSliderPicture img').load(function() {
       $('.tiSlideshowPlaceSliderPicture img').data('originalHeight', this.height);
       $('.tiSlideshowPlaceSliderPicture img').data('originalWidth', this.width);
@@ -122,6 +87,7 @@
     });
   };
   tiSlideshow.prototype.changeOptions = function(options) {
+    var self = this;
     this.options = $.extend({}, this.options, options);
     /* mask */
     $('#'+this.maskId).css('background-color', this.options.mask);
@@ -162,12 +128,24 @@
     } else {
       $('.tiSlideshowPlaceControlThumbnailsScroll').hide();
     }
-    /* mobile */
-    if (this.options.mobile) {
+    /* tactile */
+    if (this.options.tactile) {
+      $('.tiSlideshowPlaceControlThumbnailsThumbnail').each(function() { $(this).replaceWith('<span class="tiSlideshowPlaceControlThumbnailsThumbnail">'+$(this).html()+'</span>'); });
+      $('.tiSlideshowPlaceControlClose').replaceWith('<span class="tiSlideshowPlaceControlClose"></span>');
+      $('.tiSlideshowPlaceSlider .tiSlideshowPlaceSliderPrevious').replaceWith('<span class="tiSlideshowPlaceSliderPrevious"></span>');
+      $('.tiSlideshowPlaceSlider .tiSlideshowPlaceSliderNext').replaceWith('<span class="tiSlideshowPlaceSliderNext"></span>');
       $('body').bind("touchmove", $.tiSlideshow.preventTouchmove);
     } else {
+      $('.tiSlideshowPlaceControlThumbnailsThumbnail').each(function() { $(this).replaceWith('<a href="#" class="tiSlideshowPlaceControlThumbnailsThumbnail">'+$(this).html()+'</a>'); });
+      $('.tiSlideshowPlaceControlClose').replaceWith('<a href="#" class="tiSlideshowPlaceControlClose"></a>');
+      $('.tiSlideshowPlaceSlider .tiSlideshowPlaceSliderPrevious').replaceWith('<a href="#" class="tiSlideshowPlaceSliderPrevious"></a>');
+      $('.tiSlideshowPlaceSlider .tiSlideshowPlaceSliderNext').replaceWith('<a href="#" class="tiSlideshowPlaceSliderNext"></a>');
       $('body').unbind("touchmove", $.tiSlideshow.preventTouchmove);
     }
+    $('.tiSlideshowPlaceSliderPrevious').click(function() { self.previous(); return false; });
+    $('.tiSlideshowPlaceSliderNext').click(function() { self.next(); return false; });
+    $('.tiSlideshowPlaceControlClose').click(function() { self.close(); return false; });
+    self.initThumbnailsEvent();
     
     /* Render the elements */
     $.tiSlideshow.adjustSize();
@@ -232,7 +210,34 @@
       this.showCurrentImage(function() {
         self.onSlide(lastImageIndex, self.currentImageIndex);
       });
-    }    
+    }
+  };
+  tiSlideshow.prototype.initThumbnailsEvent = function() {
+    var self = this;
+    $('.tiSlideshowPlaceControlThumbnails .tiSlideshowPlaceControlThumbnailsThumbnail img').load(function() {
+      $(this).data('originalHeight', this.height);
+      $(this).data('originalWidth', this.width);
+      $.tiSlideshow.adjustSize();
+    });
+    $('.tiSlideshowPlaceControlThumbnails .tiSlideshowPlaceControlThumbnailsThumbnail:eq('+self.currentImageIndex+')').addClass('tiSlideshowPlaceControlThumbnailsSelected');
+    $('.tiSlideshowPlaceControlThumbnailsThumbnail').click(function() {
+      var diff = $(this).index() - self.currentImageIndex;
+      while (diff) {
+        if (diff > 0) {
+          self.next();
+          diff--;
+        } else {
+          self.previous();
+          diff++;
+        }
+      }
+      return false;
+    });
+    var container_width = 0;
+    $('.tiSlideshowPlaceControlThumbnailsThumbnail').each(function() {
+      container_width += $(this).outerWidth(true);
+    });
+    $('.tiSlideshowPlaceControlThumbnails').width(container_width);
   };
   /* List of all the callback, used to set the jQuery context for each one */
   tiSlideshow.prototype.beforeOpen = function() {
@@ -295,7 +300,7 @@
       slideButtons : true,
       infiniteSlide : false,
       thumbnails : true,
-      mobile : false,
+      tactile : false,
       beforeOpen : function() {},
       onOpen : function() {},
       beforeClose : function() {},
