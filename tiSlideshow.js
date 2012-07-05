@@ -212,6 +212,7 @@
       });
     }
   };
+  /* Initialize all the events on the thumbnails */
   tiSlideshow.prototype.initThumbnailsEvent = function() {
     var self = this;
     $('.tiSlideshowPlaceControlThumbnails .tiSlideshowPlaceControlThumbnailsThumbnail img').load(function() {
@@ -238,6 +239,11 @@
       container_width += $(this).outerWidth(true);
     });
     $('.tiSlideshowPlaceControlThumbnails').width(container_width);
+    /* Tactile management */
+    $('.tiSlideshowPlaceControlThumbnails').unbind("touchmove");
+    $('.tiSlideshowPlaceControlThumbnails').bind("touchmove", function() {
+      
+    });
   };
   /* List of all the callback, used to set the jQuery context for each one */
   tiSlideshow.prototype.beforeOpen = function() {
