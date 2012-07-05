@@ -321,6 +321,8 @@
         } else {
           if ($(this).data('tiSlideshow')) {
             $.tiSlideshow.interfaces[$(this).data('id')].changeOptions(options);
+            if ($.tiSlideshow.interfaces[$(this).data('id')].options.auto)
+              $(this).tiSlideshow('open');
           } else {
             var id = $.tiSlideshow.interfaces.length;
             $(this).data('tiSlideshow', true);
