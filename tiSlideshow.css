@@ -63,6 +63,7 @@ div.tiSlideshowPlaceSliderPicture {
 
 div.tiSlideshowPlaceSliderPicture img {
   margin: auto;
+  display: block;
 }
 
 div.tiSlideshowPlaceControl {
@@ -88,6 +89,7 @@ div.tiSlideshowPlaceControlThumbnails {
 }
 
 .tiSlideshowPlaceControlThumbnailsThumbnail {
+  vertical-align: bottom;
   cursor: pointer;
   display: inline-block;
   height: 70px;
