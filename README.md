@@ -65,7 +65,7 @@ Here is an example to show you how to use this plugin. All the options are at th
           thumbnails : true,
           tactile : false,
           beginIndex : 0,
-          thumbnailName : "%PATH%%FULL_NAME%",
+          thumbnailName : "%PATH%%FULL_NAME%", /* can use %PATH%, %FULL_NAME%, %NAME%, %EXT% */
           beforeOpen : function() {},
           onOpen : function() {},
           beforeClose : function() {},
