@@ -20,7 +20,6 @@ A fully configurable jQuery plugin to use beautiful and fullscreen slideshow in 
   - closable by a call to jQuery function with a control parameter or with the cross inside the tiSlideshow panel
   - pictures slidable by a call to jQuery function with a control parameter or by using existing previous and next buttons
   - realtime options modification : when you modify an option, by passing a new options array to an existing tiSlideshow, the display is modified instantly
-  - to let you have optimized website, you can choose to provide the tiSlideshow a model name for thumbnails, like _%PATH%%NAME%_thumbnail%EXT%_ or _%PATH%thumbnails/%FULL_NAME%_
 * _Configure many options_ :
   - the auto-launch of the slideshow
   - the mask color and opacity
@@ -29,6 +28,8 @@ A fully configurable jQuery plugin to use beautiful and fullscreen slideshow in 
   - the ability to have an infinite slide (by clicking the next buttons on the last picture, the first picture will be showed)
   - the presence of the thumbnails list
   - tactile enhancement : the experience on a tactile device is really different, so if you activate this option, it should be better (to zoom for example)
+  - to let you have an optimized website, you can provide tiSlideshow a model name for thumbnails, like _%PATH%%NAME%_thumbnail%EXT%_ or _%PATH%thumbnails/%FULL_NAME%_
+  - the begin picture index
 * _Listen to events_ :
   - each callback has the jQuery context set properly : you can retrieve the root element by using $(this)
   - if you return false on any before callback event, it will prevent from doing anything else, so cool !

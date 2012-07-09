@@ -41,13 +41,17 @@
     $(self.container).children('img').each(function() {
       var src = $(this).attr('src');
       self.imageList.push(src);
-      var thumbnail = '<a href="#" class="tiSlideshowPlaceControlThumbnailsThumbnail"><img src="'+src+'" alt="thumbnail" /></a>';
+      var thumbnail = '<a href="#" class="tiSlideshowPlaceControlThumbnailsThumbnail"><img src="'+self.getThumbnailSrc(src)+'" alt="thumbnail" /></a>';
       $('.tiSlideshowPlaceControlThumbnails').append(thumbnail);
     })
     self.initThumbnailsEvent();
     /* If there is a picture for the given index, we show it */
-    if (parseInt(self.currentImageIndex) < parseInt(self.imageList.length)) {
+    self.currentImageIndex = self.options.beginIndex;
+    if (self.currentImageIndex >= 0 && parseInt(self.currentImageIndex) < parseInt(self.imageList.length)) {
       this.showCurrentImage();
+    } else if (self.imageList.length > 0) {
+      self.currentImageIndex = 0;
+      self.showCurrentImage();
     }
     /* Apply options */
     this.changeOptions();
@@ -257,6 +261,49 @@
       });
     }
   };
+  tiSlideshow.prototype.getThumbnailSrc = function(imgSrc) {
+    var tmp;
+    /* Get the imgPath */
+    var imgPath = "";
+    if (imgSrc.indexOf("/") >= 0) {
+      tmp = imgSrc.split("/");
+      tmp.pop();
+      tmp = tmp.join("/");
+      if (tmp[tmp.length - 1] != '/')
+        tmp = tmp + "/";
+      imgPath = tmp;
+    }
+    /* Get the imgFullName */
+    var imgFullName = imgSrc;
+    if (imgSrc.indexOf("/") >= 0) {
+      tmp = imgSrc.split("/");
+      imgFullName = tmp[tmp.length - 1];
+    }
+    /* Get the imgName */
+    var imgName = imgFullName;
+    if (imgFullName.indexOf(".") >= 0) {
+      tmp = imgFullName.split(".");
+      tmp.pop();
+      imgName = tmp.join();
+    }
+    /* Get the imgExt */
+    var imgExt = "";
+    if (imgFullName.indexOf(".") >= 0) {
+      tmp = imgFullName.split(".");
+      imgExt = "." + tmp[tmp.length - 1];
+    }
+    /* return the result */
+    var res = this.options.thumbnailName;
+    var reg = new RegExp("(%PATH%)", "g");
+    res = res.replace(reg, imgPath);
+    reg = new RegExp("(%FULL_NAME%)", "g");
+    res = res.replace(reg, imgFullName);
+    reg = new RegExp("(%NAME%)", "g");
+    res = res.replace(reg, imgName);
+    reg = new RegExp("(%EXT%)", "g");
+    res = res.replace(reg, imgExt);
+    return res;
+  },
   /* List of all the callback, used to set the jQuery context for each one */
   tiSlideshow.prototype.beforeOpen = function() {
     var func = $.proxy(this.options.beforeOpen, this.container);
@@ -319,6 +366,8 @@
       infiniteSlide : false,
       thumbnails : true,
       tactile : false,
+      beginIndex : 0,
+      thumbnailName : "%PATH%%FULL_NAME%",
       beforeOpen : function() {},
       onOpen : function() {},
       beforeClose : function() {},
