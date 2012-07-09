@@ -1,14 +1,13 @@
 tiSlideshow
 ===========
 
-**WARNING :** this plugin is under hard development. Maybe one day it will work, but not now, sorry =)
+**WARNING :** this plugin is always under development. I think it's usable as is, but if you find bugs, send me a message ! =)
 
 _Right now, the plugin is able to be launched via the control parameter or automatically, and draw the expose mask.
 It can be closed both by the cross in the bottom right of the screen and the control parameter.
 It displays the first picture of all the img element placed inside the tiSlideshow root element.
 You can slide pictures by using the previous and next button located on each side of the screen !
-There is a list of thumbnails displayed in the bottom of the screen, and you can switch between picture with this tool !
-And that's all ! Hmm, i'm not sure i can say that anymore, cause it starts getting pretty ! o/_
+There is a list of thumbnails displayed in the bottom of the screen, and you can switch between picture with this tool ! o/_
 
 
 ### DESCRIPTION ###
