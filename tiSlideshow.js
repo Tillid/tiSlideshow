@@ -79,17 +79,28 @@
   };
   tiSlideshow.prototype.showCurrentImage = function(callback) {
     var self = this;
-    $('.tiSlideshowPlaceSliderPicture').html('<img src="'+self.imageList[self.currentImageIndex]+'" alt="picture" style="display: none;"/>');
-    $('.tiSlideshowPlaceSliderPicture img').load(function() {
-      $('.tiSlideshowPlaceSliderPicture img').data('originalHeight', this.height);
-      $('.tiSlideshowPlaceSliderPicture img').data('originalWidth', this.width);
+    $('.tiSlideshowPlaceSliderPicture').html('<img src="'+self.imageList[self.currentImageIndex]+'" alt="picture" style="display: hidden;"/>');
+    if (!$('.tiSlideshowPlaceSliderPicture img').height() || !$('.tiSlideshowPlaceSliderPicture img').width()) {
+      $('.tiSlideshowPlaceSliderPicture img').load(function() {
+        $('.tiSlideshowPlaceSliderPicture img').data('originalHeight', this.height);
+        $('.tiSlideshowPlaceSliderPicture img').data('originalWidth', this.width);
+        $.tiSlideshow.adjustSize();
+        $('.tiSlideshowPlaceSliderPicture img').show();
+        $('.tiSlideshowPlaceControlThumbnailsSelected').removeClass('tiSlideshowPlaceControlThumbnailsSelected');
+        $('.tiSlideshowPlaceControlThumbnails .tiSlideshowPlaceControlThumbnailsThumbnail:eq('+self.currentImageIndex+')').addClass('tiSlideshowPlaceControlThumbnailsSelected');
+        if (callback)
+          callback();
+      });
+    } else {
+      $('.tiSlideshowPlaceSliderPicture img').data('originalHeight', $('.tiSlideshowPlaceSliderPicture img').height());
+      $('.tiSlideshowPlaceSliderPicture img').data('originalWidth', $('.tiSlideshowPlaceSliderPicture img').width());
       $.tiSlideshow.adjustSize();
       $('.tiSlideshowPlaceSliderPicture img').show();
       $('.tiSlideshowPlaceControlThumbnailsSelected').removeClass('tiSlideshowPlaceControlThumbnailsSelected');
       $('.tiSlideshowPlaceControlThumbnails .tiSlideshowPlaceControlThumbnailsThumbnail:eq('+self.currentImageIndex+')').addClass('tiSlideshowPlaceControlThumbnailsSelected');
       if (callback)
-        callback();
-    });
+        callback();      
+    }
   };
   tiSlideshow.prototype.changeOptions = function(options) {
     var self = this;
@@ -356,7 +367,7 @@
   $.tiSlideshow = {
     name : "tiSlideshow",
     author : "Emeric Kasbarian",
-    version : "0.0.1",
+    version : "0.1.1",
     interfaces : [],
     options : {
       auto : false,
@@ -478,11 +489,12 @@
       /* Resize inside tiSlideshowPlaceSlider */
       var max_h = parseInt($('.tiSlideshowPlaceSlider').height());
       var max_w = parseInt($('.tiSlideshowPlaceSlider').width());
-      if (!$('.tiSlideshowPlaceSliderPicture img').data('originalHeight') || !$('.tiSlideshowPlaceSliderPicture img').data('originalWidth')) {
+      var $elem = $('.tiSlideshowPlaceSliderPicture img');
+      if (!$elem.data('originalHeight') || !$elem.data('originalWidth')) {
         return ;
       }
-      var h = parseInt($('.tiSlideshowPlaceSliderPicture img').data('originalHeight'));
-      var w = parseInt($('.tiSlideshowPlaceSliderPicture img').data('originalWidth'));
+      var h = parseInt($elem.data('originalHeight'));
+      var w = parseInt($elem.data('originalWidth'));
       /* Check if you have to resize image */
       $('.tiSlideshowPlaceSliderPicture img').css('margin-top', '0px');
       if (h > max_h || w > max_w) {
