@@ -48,6 +48,8 @@ A fully configurable jQuery plugin to use beautiful and fullscreen slideshow in 
   - if jScrollPane is included in your page, it will automatically use the jScrollPane plugin for the thumbnails list
   - if you activate tactile option, it will prevent the user from scrolling without closing the tiSlideshow,
     and provide the user a way to scroll only the thumbnails list
+  - the user can close the window by pressing escape and switch between picture with the left and right arrows
+  - on a tactile device, the user can switch between picture with his fingers
 * **And many many more is coming !**
 
 ### EXAMPLE ###

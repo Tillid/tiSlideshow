@@ -30,7 +30,7 @@
     this.maskId = maskId;
     var exposeMask = "<div id=\"" + this.maskId + "\" class=\"tiSlideshowExposeMask\" style=\"opacity: " + this.options.opacity + "; background-color: " + this.options.mask + "; \"></div>";
     var placeControl = '<div class="tiSlideshowPlaceControl"><div class="tiSlideshowPlaceControlThumbnailsScroll"><div class="tiSlideshowPlaceControlThumbnails"></div></div><a href="#" class="tiSlideshowPlaceControlClose"></a></div>';
-    var place = '<div class="tiSlideshowPlace"><div class="tiSlideshowPlaceSlider"><a href="#" class="tiSlideshowPlaceSliderPrevious"></a><a href="#" class="tiSlideshowPlaceSliderNext"></a><div class="tiSlideshowPlaceSliderPicture"></div></div>'+placeControl+'</div>';
+    var place = '<div class="tiSlideshowPlace"><div class="tiSlideshowPlaceSlider"><div class="tiSlideshowPlaceSliderPicture"></div><a href="#" class="tiSlideshowPlaceSliderPrevious"></a><a href="#" class="tiSlideshowPlaceSliderNext"></a></div>'+placeControl+'</div>';
     $('body').append(exposeMask);
     $('body').append(place);
     if (navigator.appName == 'Microsoft Internet Explorer') {
@@ -55,10 +55,14 @@
     }
     /* Apply options */
     this.changeOptions();
+    /* Create the touch slide manager */
+    this.touchSlideManager();
     /* Flush the display */
     $(window).scrollTop(0);
     $('.tiSlideshowExposeMask').show();
     $('.tiSlideshowPlace').show();
+    /* Activate key manager */
+    this.keyManager();
     /* Fire the onOpen event */
     this.onOpen();
   };
@@ -74,8 +78,61 @@
     /* Reset the touchmove event */
     $('body').unbind("touchmove", $.tiSlideshow.preventTouchmove);
     this.isOpen = false;
+    /* Deactivate key manager */
+    this.keyManager();
     /* Fire the onClose event */
     this.onClose();
+  };
+  tiSlideshow.prototype.keyManager = function() {
+    var self = this;
+    if (this.isOpen) {
+      $(document).keydown(function(event) {
+        if (event.which == 37)
+          self.previous();
+        if (event.which == 39)
+          self.next();
+        if (event.which == 27)
+          self.close();
+      });
+    } else {
+      $(document).unbind("keypress");
+    }
+  };
+  tiSlideshow.prototype.touchSlideManager = function() {
+    var self = this;
+    $('.tiSlideshowPlaceSliderPicture').unbind("touchmove");
+    $('.tiSlideshowPlaceSliderPicture').bind("touchmove", function(e) {
+      var new_x = e.originalEvent.touches[0].pageX;
+      if (self.lastTouchSlideX > 0) {
+        var diff = self.lastTouchSlideX - new_x;
+        var lastLeft = $('.tiSlideshowPlaceSliderPicture').position().left;
+        $('.tiSlideshowPlaceSliderPicture').css('left', parseInt(lastLeft - diff) + "px");
+        }
+        self.lastTouchSlideX = new_x;
+        /* If slide to right */
+        if ($('.tiSlideshowPlaceSliderPicture').position().left > 0 && $('.tiSlideshowPlaceSliderPicture').position().left > $('.tiSlideshowPlaceSliderPicture').width() / 2) {
+          if (self.previous()) {
+            $('.tiSlideshowPlaceSliderPicture').css('left', 0);
+            self.lastTouchSlideX = 0;
+          }
+        }
+        /* If slide to left */
+        if ($('.tiSlideshowPlaceSliderPicture').position().left < 0 && $('.tiSlideshowPlaceSliderPicture').position().left < -$('.tiSlideshowPlaceSliderPicture').width() / 2) {
+          if (self.next()) {
+            $('.tiSlideshowPlaceSliderPicture').css('left', 0);
+            self.lastTouchSlideX = 0;
+          }
+        }
+    });
+    $('.tiSlideshowPlaceSliderPicture').unbind("touchstart");
+    $('.tiSlideshowPlaceSliderPicture').bind("touchstart", function(e) {
+      self.lastTouchSlideX = 0;
+    });
+    $('.tiSlideshowPlaceSliderPicture').unbind("touchend");
+    $('.tiSlideshowPlaceSliderPicture').bind("touchend", function(e) {
+      $('.tiSlideshowPlaceSliderPicture').animate({left : 0}, 200);
+      self.lastTouchSlideX = 0;
+    });
   };
   tiSlideshow.prototype.showCurrentImage = function(callback) {
     var self = this;
@@ -175,7 +232,7 @@
         newImageIndex = 0;
     }
     if (newImageIndex < parseInt(self.imageList.length) && newImageIndex >= 0) {
-      if (!this.beforeSlide(self.currentImageIndex, newImageIndex)) return;
+      if (!this.beforeSlide(self.currentImageIndex, newImageIndex)) return false;
       self.currentImageIndex = newImageIndex;
       if (this.options.slideButtons) {
         if (this.options.infiniteSlide) {
@@ -195,7 +252,9 @@
       this.showCurrentImage(function() {
         self.onSlide(lastImageIndex, self.currentImageIndex);
       });
+      return true;
     }
+    return false;
   };
   tiSlideshow.prototype.previous = function() {
     var self = this;
@@ -206,7 +265,7 @@
         newImageIndex = self.imageList.length - 1;
     }
     if (newImageIndex < parseInt(self.imageList.length) && newImageIndex >= 0) {
-      if (!self.beforeSlide(self.currentImageIndex, newImageIndex)) return;
+      if (!self.beforeSlide(self.currentImageIndex, newImageIndex)) return false;
       self.currentImageIndex = newImageIndex;
       if (this.options.slideButtons) {
         if (this.options.infiniteSlide) {
@@ -226,7 +285,9 @@
       this.showCurrentImage(function() {
         self.onSlide(lastImageIndex, self.currentImageIndex);
       });
+      return true;
     }
+    return false;
   };
   /* Initialize all the events on the thumbnails */
   tiSlideshow.prototype.initThumbnailsEvent = function() {
