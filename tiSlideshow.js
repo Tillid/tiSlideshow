@@ -28,9 +28,10 @@
       maskId += "i";
     }
     this.maskId = maskId;
+    var actions = '<div class="tiSlideshowPlaceSliderActions"></div>';
     var exposeMask = "<div id=\"" + this.maskId + "\" class=\"tiSlideshowExposeMask\" style=\"opacity: " + this.options.opacity + "; background-color: " + this.options.mask + "; \"></div>";
-    var placeControl = '<div class="tiSlideshowPlaceControl"><div class="tiSlideshowPlaceControlThumbnailsScroll"><div class="tiSlideshowPlaceControlThumbnails"></div></div><a href="#" class="tiSlideshowPlaceControlClose"></a></div>';
-    var place = '<div class="tiSlideshowPlace"><div class="tiSlideshowPlaceSlider"><div class="tiSlideshowPlaceSliderPicture"></div><a href="#" class="tiSlideshowPlaceSliderPrevious"></a><a href="#" class="tiSlideshowPlaceSliderNext"></a></div>'+placeControl+'</div>';
+    var placeControl = '<div class="tiSlideshowPlaceControl"><div class="tiSlideshowPlaceControlThumbnailsScroll"><div class="tiSlideshowPlaceControlThumbnails"></div></div><a href="#" class="tiSlideshowPlaceControlActions"></a><a href="#" class="tiSlideshowPlaceControlClose"></a></div>';
+    var place = '<div class="tiSlideshowPlace"><div class="tiSlideshowPlaceSlider"><div class="tiSlideshowPlaceSliderPicture"></div><a href="#" class="tiSlideshowPlaceSliderPrevious"></a><a href="#" class="tiSlideshowPlaceSliderNext"></a>'+actions+'</div>'+placeControl+'</div>';
     $('body').append(exposeMask);
     $('body').append(place);
     if (navigator.appName == 'Microsoft Internet Explorer') {
@@ -95,7 +96,7 @@
           self.close();
       });
     } else {
-      $(document).unbind("keypress");
+      $(document).unbind("keydown");
     }
   };
   tiSlideshow.prototype.touchSlideManager = function() {
@@ -170,12 +171,14 @@
     if (this.options.tactile) {
       $('.tiSlideshowPlaceControlThumbnailsThumbnail').each(function() { $(this).replaceWith('<span class="tiSlideshowPlaceControlThumbnailsThumbnail">'+$(this).html()+'</span>'); });
       $('.tiSlideshowPlaceControlClose').replaceWith('<span class="tiSlideshowPlaceControlClose"></span>');
+      $('.tiSlideshowPlaceControlActions').replaceWith('<span class="tiSlideshowPlaceControlActions"></span>');
       $('.tiSlideshowPlaceSlider .tiSlideshowPlaceSliderPrevious').replaceWith('<span class="tiSlideshowPlaceSliderPrevious"></span>');
       $('.tiSlideshowPlaceSlider .tiSlideshowPlaceSliderNext').replaceWith('<span class="tiSlideshowPlaceSliderNext"></span>');
       $('body').bind("touchmove", $.tiSlideshow.preventTouchmove);
     } else {
       $('.tiSlideshowPlaceControlThumbnailsThumbnail').each(function() { $(this).replaceWith('<a href="#" class="tiSlideshowPlaceControlThumbnailsThumbnail">'+$(this).html()+'</a>'); });
       $('.tiSlideshowPlaceControlClose').replaceWith('<a href="#" class="tiSlideshowPlaceControlClose"></a>');
+      $('.tiSlideshowPlaceControlActions').replaceWith('<a href="#" class="tiSlideshowPlaceControlActions"></a>');
       $('.tiSlideshowPlaceSlider .tiSlideshowPlaceSliderPrevious').replaceWith('<a href="#" class="tiSlideshowPlaceSliderPrevious"></a>');
       $('.tiSlideshowPlaceSlider .tiSlideshowPlaceSliderNext').replaceWith('<a href="#" class="tiSlideshowPlaceSliderNext"></a>');
       $('body').unbind("touchmove", $.tiSlideshow.preventTouchmove);
@@ -183,6 +186,7 @@
     $('.tiSlideshowPlaceSliderPrevious').click(function() { self.previous(); return false; });
     $('.tiSlideshowPlaceSliderNext').click(function() { self.next(); return false; });
     $('.tiSlideshowPlaceControlClose').click(function() { self.close(); return false; });
+    $('.tiSlideshowPlaceControlActions').click(function() { self.actions(); return false; });
     self.initThumbnailsEvent();
     /* closeButton */
     if (this.options.closeButton)
@@ -218,6 +222,30 @@
       $('.tiSlideshowPlaceControlThumbnailsScroll').show();
     } else {
       $('.tiSlideshowPlaceControlThumbnailsScroll').hide();
+    }
+    /* actions */
+    $('.tiSlideshowPlaceSliderActions').empty();
+    if (this.options.actions && this.options.actions.length > 0) {
+      $('.tiSlideshowPlaceControlActions').width(100);
+      var i = 0;
+      while (i < this.options.actions.length) {
+        var newAction = '';
+        if (this.options.tactile)
+          newAction = '<span class="tiSlideshowPlaceSliderActionsButton">'+this.options.actions[i].title+'</span>';
+        else
+          newAction = '<a href="#" class="tiSlideshowPlaceSliderActionsButton">'+this.options.actions[i].title+'</a>';
+        $('.tiSlideshowPlaceSliderActions').append(newAction);
+        $('.tiSlideshowPlaceSliderActionsButton:last-child').click(function() {
+          if (!$(this).hasClass('unclickable')) {
+            var func = $.proxy(self.options.actions[$(this).index()].callback, $(this));
+            func();
+          } else
+           return false;
+        });
+        i++;
+      }
+    } else {
+      $('.tiSlideshowPlaceControlActions').width(0);
     }
     
     /* Render the elements */
@@ -376,7 +404,14 @@
     reg = new RegExp("(%EXT%)", "g");
     res = res.replace(reg, imgExt);
     return res;
-  },
+  };
+  tiSlideshow.prototype.actions = function() {
+    if ($('.tiSlideshowPlaceSliderActions').css('display') == 'none') {
+      $('.tiSlideshowPlaceSliderActions').show("fast");
+    } else {
+      $('.tiSlideshowPlaceSliderActions').hide(300);
+    }
+  };
   /* List of all the callback, used to set the jQuery context for each one */
   tiSlideshow.prototype.beforeOpen = function() {
     var func = $.proxy(this.options.beforeOpen, this.container);
@@ -441,6 +476,7 @@
       tactile : false,
       beginIndex : 0,
       thumbnailName : "%PATH%%FULL_NAME%",
+      actions : [],
       beforeOpen : function() {},
       onOpen : function() {},
       beforeClose : function() {},
@@ -501,6 +537,7 @@
         $('.tiSlideshowPlaceSlider').height(window_height - 100);
       else
         $('.tiSlideshowPlaceSlider').height(0);
+      $('.tiSlideshowPlaceSliderActions').height($('.tiSlideshowPlaceSlider').height());
       /* Properly place arrows to change slide */
       var diff_previous = parseInt(($('.tiSlideshowPlaceSlider').height() - $('.tiSlideshowPlaceSliderPrevious').height()) / 2);
       var diff_next = parseInt(($('.tiSlideshowPlaceSlider').height() - $('.tiSlideshowPlaceSliderNext').height()) / 2);
