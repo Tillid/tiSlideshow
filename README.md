@@ -22,6 +22,7 @@ A fully configurable jQuery plugin to use beautiful and fullscreen slideshow in 
   - closable by a call to jQuery function with a control parameter or with the cross inside the tiSlideshow panel
   - pictures slidable by a call to jQuery function with a control parameter or by using existing previous and next buttons
   - realtime options modification : when you modify an option, by passing a new options array to an existing tiSlideshow, the display is modified instantly
+  - action buttons : by just entering an array of a text and a callback, tiSlideshow creates buttons in the user interface
 * _Configure many options_ :
   - the auto-launch of the slideshow
   - the mask color and opacity

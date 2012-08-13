@@ -139,6 +139,64 @@ div.tiSlideshowPlaceControlThumbnails {
   background-position-y: -100px;
 }
 
+.tiSlideshowPlaceSliderActions {
+  padding: 0 10px 0 10px;
+  width: 300px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  overflow: hidden;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.9);
+  box-shadow: 0 0 5px 0 white inset;
+}
+
+.tiSlideshowPlaceSliderActionsButton {
+  overflow: hidden;
+  box-sizing: border-box;
+  color: #444;
+  text-shadow: rgba(255, 255, 255, 0.5) 0px -1px;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 10px;
+  vertical-align: top;
+  padding: 10px;
+  border-radius: 4px;
+  border: 2px solid #888;
+  background-color: #CCC;
+  background-repeat: no-repeat;
+  background-image: -webkit-linear-gradient(top, #EEE 0%, #CCC 100%);
+  background-image: -moz-linear-gradient(top, #EEE 0%, #CCC 100%);
+  background-image: -ms-linear-gradient(top, #EEE 0%, #CCC 100%);
+  background-image: -o-linear-gradient(top, #EEE 0%, #CCC 100%);
+  background-image: -linear-gradient(top, #EEE 0%, #CCC 100%);
+  box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.5);
+}
+.tiSlideshowPlaceSliderActionsButton.unclickable {
+  cursor: default;
+}
+.tiSlideshowPlaceSliderActionsButton:not(.unclickable):hover {
+  cursor: pointer;
+  background-color: #DDD;
+  background-repeat: no-repeat;
+  background-image: -webkit-linear-gradient(top, #FFF 0%, #DDD 100%);
+  background-image: -moz-linear-gradient(top, #FFF 0%, #DDD 100%);
+  background-image: -ms-linear-gradient(top, #FFF 0%, #DDD 100%);
+  background-image: -o-linear-gradient(top, #FFF 0%, #DDD 100%);
+  background-image: -linear-gradient(top, #FFF 0%, #DDD 100%);
+  border-color: #999;
+}
+.tiSlideshowPlaceSliderActionsButton:not(.unclickable):active {
+  background-color: #AAA;
+  background-repeat: no-repeat;
+  background-image: -webkit-linear-gradient(top, #DDD 0%, #AAA 100%);
+  background-image: -moz-linear-gradient(top, #DDD 0%, #AAA 100%);
+  background-image: -ms-linear-gradient(top, #DDD 0%, #AAA 100%);
+  background-image: -o-linear-gradient(top, #DDD 0%, #AAA 100%);
+  background-image: -linear-gradient(top, #DDD 0%, #AAA 100%);
+  border-color: #666;
+}
+
 /* About the jScrollPane plugin */
 div.jspDrag {
   background-color: #3B3B3D;
