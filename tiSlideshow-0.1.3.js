@@ -547,8 +547,8 @@
       /* Resize inside tiSlideshowPlaceControl */
       if ($('.tiSlideshowPlaceControlThumbnailsScroll').data('jsp'))
         $('.tiSlideshowPlaceControlThumbnailsScroll').data('jsp').destroy();
-      if (window_width - 100 > 0) {
-        $('.tiSlideshowPlaceControlThumbnailsScroll').width(window_width - 100);
+      if (window_width - 200 > 0) {
+        $('.tiSlideshowPlaceControlThumbnailsScroll').width(window_width - 200);
       }
       else
         $('.tiSlideshowPlaceControlThumbnailsScroll').width(0);
