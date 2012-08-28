@@ -229,19 +229,21 @@
       $('.tiSlideshowPlaceControlActions').width(100);
       var i = 0;
       while (i < this.options.actions.length) {
-        var newAction = '';
-        if (this.options.tactile)
-          newAction = '<span class="tiSlideshowPlaceSliderActionsButton">'+this.options.actions[i].title+'</span>';
-        else
-          newAction = '<a href="#" class="tiSlideshowPlaceSliderActionsButton">'+this.options.actions[i].title+'</a>';
-        $('.tiSlideshowPlaceSliderActions').append(newAction);
-        $('.tiSlideshowPlaceSliderActionsButton:last-child').click(function() {
-          if (!$(this).hasClass('unclickable')) {
-            var func = $.proxy(self.options.actions[$(this).index()].callback, $(this));
-            func();
-          } else
-           return false;
-        });
+        if (this.options.actions[i]) {
+          var newAction = '';
+          if (this.options.tactile)
+            newAction = '<span class="tiSlideshowPlaceSliderActionsButton">'+this.options.actions[i].title+'</span>';
+          else
+            newAction = '<a href="#" class="tiSlideshowPlaceSliderActionsButton">'+this.options.actions[i].title+'</a>';
+          $('.tiSlideshowPlaceSliderActions').append(newAction);
+          $('.tiSlideshowPlaceSliderActionsButton:last-child').click(function() {
+            if (!$(this).hasClass('unclickable')) {
+              var func = $.proxy(self.options.actions[$(this).index()].callback, $(this));
+              func();
+            } else
+            return false;
+          });
+        }
         i++;
       }
     } else {
