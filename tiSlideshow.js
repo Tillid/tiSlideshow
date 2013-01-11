@@ -40,11 +40,15 @@
     var self = this;
     /* Initialize slider content, and thumbnails */
     $(self.container).children('img').each(function() {
-      var src = $(this).attr('src');
+      var src = "";
+      if ($(this).attr('data-src') != "")
+        src = $(this).attr('data-src');
+      else
+        src = $(this).attr('src');
       self.imageList.push(src);
       var thumbnail = '<a href="#" class="tiSlideshowPlaceControlThumbnailsThumbnail"><img src="'+self.getThumbnailSrc(src)+'" alt="thumbnail" /></a>';
       $('.tiSlideshowPlaceControlThumbnails').append(thumbnail);
-    })
+    });
     self.initThumbnailsEvent();
     /* If there is a picture for the given index, we show it */
     self.currentImageIndex = self.options.beginIndex;
@@ -465,7 +469,7 @@
   $.tiSlideshow = {
     name : "tiSlideshow",
     author : "Emeric Kasbarian",
-    version : "0.1.1",
+    version : "0.1.4",
     interfaces : [],
     options : {
       auto : false,

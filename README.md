@@ -51,6 +51,7 @@ A fully configurable jQuery plugin to use beautiful and fullscreen slideshow in 
     and provide the user a way to scroll only the thumbnails list
   - the user can close the window by pressing escape and switch between picture with the left and right arrows
   - on a tactile device, the user can switch between picture with his fingers
+  - you can enable lazy loading picture mode by using a data-src attribute on your <img> instead of src attribute
 * **And many many more is coming !**
 
 ### EXAMPLE ###
