@@ -51,7 +51,7 @@ A fully configurable jQuery plugin to use beautiful and fullscreen slideshow in 
     and provide the user a way to scroll only the thumbnails list
   - the user can close the window by pressing escape and switch between picture with the left and right arrows
   - on a tactile device, the user can switch between picture with his fingers
-  - you can enable lazy loading picture mode by using a data-src attribute on your <img> instead of src attribute
+  - you can enable lazy picture loading mode by using a data-src attribute on your <img> instead of src attribute
 * **And many many more is coming !**
 
 ### EXAMPLE ###
@@ -74,8 +74,8 @@ Here is an example to show you how to use this plugin. All the options are at th
           onOpen : function() {},
           beforeClose : function() {},
           onClose : function() {},
-          beforeSlide : function() {},
-          onSlide : function() {}
+          beforeSlide : function(currentPictureID, futurePictureID) {},
+          onSlide : function(lastPictureID, currentPictureID) {}
         });
         /* this is what I call a command parameter */
         $('#slideshow').tiSlideshow('open');
@@ -92,6 +92,7 @@ Here is an example to show you how to use this plugin. All the options are at th
     <div id="slideshow">
       <img src="/pictures/my_picture1.png" alt="picture1" />
       <img src="/pictures/my_picture2.png" alt="picture2" />
-      <img src="/pictures/my_picture3.png" alt="picture3" />
-      <img src="/pictures/my_picture4.png" alt="picture4" />
+      <!-- Use of data-src to enable lazy picture loading (page loading is far away shorter) -->
+      <img data-src="/pictures/my_picture3.png" src="/picturs/blank.png" alt="picture3" />
+      <img data-src="/pictures/my_picture4.png" src="/picturs/blank.png" alt="picture4" />
     </div>

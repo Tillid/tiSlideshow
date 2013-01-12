@@ -41,7 +41,7 @@
     /* Initialize slider content, and thumbnails */
     $(self.container).children('img').each(function() {
       var src = "";
-      if ($(this).attr('data-src') != "")
+      if ($(this).attr('data-src') != "" && $(this).attr('data-src') != null)
         src = $(this).attr('data-src');
       else
         src = $(this).attr('src');
