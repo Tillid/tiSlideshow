@@ -96,3 +96,8 @@ Here is an example to show you how to use this plugin. All the options are at th
       <img data-src="/pictures/my_picture3.png" src="/picturs/blank.png" alt="picture3" />
       <img data-src="/pictures/my_picture4.png" src="/picturs/blank.png" alt="picture4" />
     </div>
+
+### PATCH NOTES ###
+_12/01/2013 : **v0.1.5**_
+* Change the filename to always stay the same (through different versions)
+* Add the lazy picture loading mode
