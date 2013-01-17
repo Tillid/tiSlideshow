@@ -1,8 +1,6 @@
 tiSlideshow
 ===========
 
-**WARNING :** this plugin is always under development. I think it's usable as is, but if you find bugs, send me a message ! =)
-
 _Right now, the plugin is able to be launched via the control parameter or automatically, and draw the expose mask.
 It can be closed both by the cross in the bottom right of the screen and the control parameter.
 It displays the first picture of all the img element placed inside the tiSlideshow root element.
@@ -98,6 +96,9 @@ Here is an example to show you how to use this plugin. All the options are at th
     </div>
 
 ### PATCH NOTES ###
+_17/01/2013 : **v1.0.0**_
+* Add the manifest file to allow the plugin being published on jQuery Plugins website
+
 _12/01/2013 : **v0.1.5**_
 * Change the filename to always stay the same (through different versions)
 * Add the lazy picture loading mode
