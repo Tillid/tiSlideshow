@@ -98,6 +98,7 @@ Here is an example to show you how to use this plugin. All the options are at th
 ### PATCH NOTES ###
 _17/01/2013 : **v1.0.0**_
 * Add the manifest file to allow the plugin being published on jQuery Plugins website
+* Add a license file
 
 _12/01/2013 : **v0.1.5**_
 * Change the filename to always stay the same (through different versions)
