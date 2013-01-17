@@ -467,9 +467,9 @@
    * and global parameters
    */
   $.tiSlideshow = {
-    name : "tiSlideshow",
+    name : "tislideshow",
     author : "Emeric Kasbarian",
-    version : "0.1.4",
+    version : "1.0.2",
     interfaces : [],
     options : {
       auto : false,

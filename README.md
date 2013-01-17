@@ -96,6 +96,9 @@ Here is an example to show you how to use this plugin. All the options are at th
     </div>
 
 ### PATCH NOTES ###
+_17/01/2013 : **v1.0.2**_
+* Just change the version to publish the plugin on jQuery website
+
 _17/01/2013 : **v1.0.1**_
 * Just change the version to publish the plugin on jQuery website
 
